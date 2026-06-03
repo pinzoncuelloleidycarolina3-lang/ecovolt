@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
@@ -8,9 +9,22 @@ const sequelize = new Sequelize(
     {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
-        dialect: 'postgres',
-        logging: process.env.NODE_ENV === 'development' ? console.log : false
+        dialect: 'mysql', // XAMPP usa MySQL
+
+        logging:
+            process.env.NODE_ENV === 'development'
+                ? console.log
+                : false
     }
 );
+
+// Probar conexión
+sequelize.authenticate()
+    .then(() => {
+        console.log('Conexión exitosa a MySQL');
+    })
+    .catch((error) => {
+        console.error('Error de conexión:', error);
+    });
 
 module.exports = sequelize;
